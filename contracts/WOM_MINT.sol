@@ -13,6 +13,7 @@ contract WOM is ERC721Enumerable, Ownable {
   string public customContractURI = "";
   uint256 public maxSupply = 13; // @TODO set to 1000
   uint256 public maxMintAmount = 2;
+  uint256 public maxNFTPerAddress = 2;
   bool public paused = false;
   bool public onlyWhitelisted = true;
   address[] public whitelistedAddresses;
@@ -42,7 +43,7 @@ contract WOM is ERC721Enumerable, Ownable {
 
     if (msg.sender != owner()) {
       uint256 ownerMintedCount = addressMintedBalance[msg.sender];
-      require(ownerMintedCount + _mintAmount <= maxMintAmount, "max NFT per address exceeded");
+      require(ownerMintedCount + _mintAmount <= maxNFTPerAddress, "max NFT per address exceeded");
       require(_mintAmount <= maxMintAmount, "max mint amount per session exceeded");
 
       if(onlyWhitelisted == true) {
@@ -102,6 +103,10 @@ contract WOM is ERC721Enumerable, Ownable {
   
   function setMaxMintAmount(uint256 _limit) public onlyOwner {
     maxMintAmount = _limit;
+  }
+  
+  function setMaxNFTPerAddress(uint256 _limit) public onlyOwner {
+    maxNFTPerAddress = _limit;
   }
 
   function setBaseURI(string memory _newBaseURI) public onlyOwner {

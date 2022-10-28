@@ -310,6 +310,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "maxNFTPerAddress",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "maxSupply",
 				"outputs": [
 					{
@@ -542,6 +555,19 @@
 					}
 				],
 				"name": "setMaxMintAmount",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_limit",
+						"type": "uint256"
+					}
+				],
+				"name": "setMaxNFTPerAddress",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -943,11 +969,11 @@
 			]
 		},
 		"contracts/WOM_MINT.sol": {
-			"keccak256": "0xfa7b3f137befbf517886c6334425399ddd12ef1b9ef7d06584d189df9693599a",
+			"keccak256": "0x9e321b97c5ee40e0c9aa08296f295c0bbaea69fa215000e1f08043dfe3326d6c",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://ddad215476476d582b1c4b4b921ebcb73921e6c0f70a3758f04eaa2dfe44e564",
-				"dweb:/ipfs/QmcyuX46vKtPuNy1Vh3eD6EfbpBf7hXQ2UzPc2CYHj37pp"
+				"bzz-raw://a15a8358cc25cd75a4399c2b3164700528dad3a9459dd8c8c765c0b012d91d3e",
+				"dweb:/ipfs/QmPvoE1HrhzaVfRQSdVF2ME4TQj96oAAqAEFDZCiUonAcQ"
 			]
 		}
 	},
