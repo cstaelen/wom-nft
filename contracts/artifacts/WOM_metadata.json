@@ -21,6 +21,11 @@
 						"internalType": "string",
 						"name": "_initBaseURI",
 						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_contractURI",
+						"type": "string"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -212,7 +217,20 @@
 						"type": "string"
 					}
 				],
-				"stateMutability": "pure",
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "customContractURI",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -324,19 +342,6 @@
 						"internalType": "string",
 						"name": "",
 						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "nftPerAddressLimit",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -518,12 +523,25 @@
 			{
 				"inputs": [
 					{
+						"internalType": "string",
+						"name": "_newContractURI",
+						"type": "string"
+					}
+				],
+				"name": "setContractURI",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "_limit",
 						"type": "uint256"
 					}
 				],
-				"name": "setNftPerAddressLimit",
+				"name": "setMaxMintAmount",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -925,11 +943,11 @@
 			]
 		},
 		"contracts/WOM_MINT.sol": {
-			"keccak256": "0xc0cf7fbb689b5297c5cae12ff0a6f2622b51f62b0f5464d0088a90ea3e0b9118",
+			"keccak256": "0xfa7b3f137befbf517886c6334425399ddd12ef1b9ef7d06584d189df9693599a",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://e673b4a7fab5fe8b88cce95034b4f4852614dd513081d984efa41172fc50a5fc",
-				"dweb:/ipfs/QmTGKheLwb4KEos2ji2yLiJXsgxFUaByViWmsT98EBfAbd"
+				"bzz-raw://ddad215476476d582b1c4b4b921ebcb73921e6c0f70a3758f04eaa2dfe44e564",
+				"dweb:/ipfs/QmcyuX46vKtPuNy1Vh3eD6EfbpBf7hXQ2UzPc2CYHj37pp"
 			]
 		}
 	},

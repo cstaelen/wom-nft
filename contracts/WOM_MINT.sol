@@ -8,11 +8,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract WOM is ERC721Enumerable, Ownable {
   using Strings for uint256;
 
-  string public baseURI;
+  string public baseURI = "";
   string public baseExtension = ".json";
+  string public customContractURI = "";
   uint256 public maxSupply = 13; // @TODO set to 1000
   uint256 public maxMintAmount = 2;
-  uint256 public nftPerAddressLimit = 2;
   bool public paused = false;
   bool public onlyWhitelisted = true;
   address[] public whitelistedAddresses;
@@ -21,8 +21,10 @@ contract WOM is ERC721Enumerable, Ownable {
   constructor(
     string memory _name,
     string memory _symbol,
-    string memory _initBaseURI
+    string memory _initBaseURI,
+    string memory _contractURI
   ) ERC721(_name, _symbol) {
+    setContractURI(_contractURI);
     setBaseURI(_initBaseURI);
   }
 
@@ -39,12 +41,12 @@ contract WOM is ERC721Enumerable, Ownable {
     require(supply + _mintAmount <= maxSupply, "max NFT limit exceeded");
 
     if (msg.sender != owner()) {
+      uint256 ownerMintedCount = addressMintedBalance[msg.sender];
+      require(ownerMintedCount + _mintAmount <= maxMintAmount, "max NFT per address exceeded");
       require(_mintAmount <= maxMintAmount, "max mint amount per session exceeded");
 
       if(onlyWhitelisted == true) {
           require(isWhitelisted(msg.sender), "user is not whitelisted");
-          uint256 ownerMintedCount = addressMintedBalance[msg.sender];
-          require(ownerMintedCount + _mintAmount <= nftPerAddressLimit, "max NFT per address exceeded");
       }
     }
 
@@ -53,12 +55,11 @@ contract WOM is ERC721Enumerable, Ownable {
       _safeMint(msg.sender, supply + i);
     }
   }
-
-  function contractURI() public pure returns (string memory) {
-    // @TODO Update with true data
-    return "https://bafkreickzcdxcbygczoczyrkzzii5hddgwd4k2vk5wgamm3pk325k7thny.ipfs.nftstorage.link/";
-  }
   
+  function contractURI() public view returns (string memory) {
+    return customContractURI;
+  }
+
   function isWhitelisted(address _user) public view returns (bool) {
     for (uint i = 0; i < whitelistedAddresses.length; i++) {
       if (whitelistedAddresses[i] == _user) {
@@ -99,12 +100,16 @@ contract WOM is ERC721Enumerable, Ownable {
       : "";
   }
   
-  function setNftPerAddressLimit(uint256 _limit) public onlyOwner {
-    nftPerAddressLimit = _limit;
+  function setMaxMintAmount(uint256 _limit) public onlyOwner {
+    maxMintAmount = _limit;
   }
 
   function setBaseURI(string memory _newBaseURI) public onlyOwner {
     baseURI = _newBaseURI;
+  }
+
+  function setContractURI(string memory _newContractURI) public onlyOwner {
+    customContractURI = _newContractURI;
   }
 
   function setBaseExtension(string memory _newBaseExtension) public onlyOwner {
@@ -129,7 +134,7 @@ contract WOM is ERC721Enumerable, Ownable {
     // Do not remove this otherwise you will not be able to withdraw the funds.
     // =============================================================================
     (bool os, ) = payable(owner()).call{value: address(this).balance}("");
-    require(os);
+    assert(os);
     // =============================================================================
   }
 }
