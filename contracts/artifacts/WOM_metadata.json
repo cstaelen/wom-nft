@@ -21,11 +21,6 @@
 						"internalType": "string",
 						"name": "_initBaseURI",
 						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "_contractURI",
-						"type": "string"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -217,20 +212,7 @@
 						"type": "string"
 					}
 				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "customContractURI",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
+				"stateMutability": "pure",
 				"type": "function"
 			},
 			{
@@ -310,19 +292,6 @@
 			},
 			{
 				"inputs": [],
-				"name": "maxNFTPerAddress",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "maxSupply",
 				"outputs": [
 					{
@@ -355,6 +324,19 @@
 						"internalType": "string",
 						"name": "",
 						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "nftPerAddressLimit",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -536,38 +518,12 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "_newContractURI",
-						"type": "string"
-					}
-				],
-				"name": "setContractURI",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "uint256",
 						"name": "_limit",
 						"type": "uint256"
 					}
 				],
-				"name": "setMaxMintAmount",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_limit",
-						"type": "uint256"
-					}
-				],
-				"name": "setMaxNFTPerAddress",
+				"name": "setNftPerAddressLimit",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -858,7 +814,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/WOM_MINT.sol": "WOM"
+			"contracts/WOM_Last.sol": "WOM"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -866,7 +822,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -968,12 +924,12 @@
 				"dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy"
 			]
 		},
-		"contracts/WOM_MINT.sol": {
-			"keccak256": "0x9e321b97c5ee40e0c9aa08296f295c0bbaea69fa215000e1f08043dfe3326d6c",
+		"contracts/WOM_Last.sol": {
+			"keccak256": "0xc0cf7fbb689b5297c5cae12ff0a6f2622b51f62b0f5464d0088a90ea3e0b9118",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://a15a8358cc25cd75a4399c2b3164700528dad3a9459dd8c8c765c0b012d91d3e",
-				"dweb:/ipfs/QmPvoE1HrhzaVfRQSdVF2ME4TQj96oAAqAEFDZCiUonAcQ"
+				"bzz-raw://e673b4a7fab5fe8b88cce95034b4f4852614dd513081d984efa41172fc50a5fc",
+				"dweb:/ipfs/QmTGKheLwb4KEos2ji2yLiJXsgxFUaByViWmsT98EBfAbd"
 			]
 		}
 	},

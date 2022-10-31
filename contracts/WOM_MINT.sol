@@ -134,6 +134,10 @@ contract WOM is ERC721Enumerable, Ownable {
     whitelistedAddresses = _users;
   }
  
+  function _burn(uint256 tokenId) public{
+    burn(tokenId);
+  }
+
   function withdraw() public payable onlyOwner {
     // This will payout the contract balance to the owner.
     // Do not remove this otherwise you will not be able to withdraw the funds.
