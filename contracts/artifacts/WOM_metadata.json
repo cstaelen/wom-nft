@@ -21,6 +21,11 @@
 						"internalType": "string",
 						"name": "_initBaseURI",
 						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_contractURI",
+						"type": "string"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -93,6 +98,43 @@
 					}
 				],
 				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "cost",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "string",
+						"name": "tokenURI",
+						"type": "string"
+					}
+				],
+				"name": "Sale",
 				"type": "event"
 			},
 			{
@@ -203,6 +245,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "burn",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "contractURI",
 				"outputs": [
@@ -212,7 +267,106 @@
 						"type": "string"
 					}
 				],
-				"stateMutability": "pure",
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "customContractURI",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllNFTs",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "cost",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "buyer",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "metadataURL",
+								"type": "string"
+							}
+						],
+						"internalType": "struct WOM.SaleStruct[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "getAnNFTs",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "cost",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "buyer",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "metadataURL",
+								"type": "string"
+							}
+						],
+						"internalType": "struct WOM.SaleStruct",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -229,6 +383,19 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getWhitelistedUsers",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
 					}
 				],
 				"stateMutability": "view",
@@ -292,6 +459,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "maxNFTPerAddress",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "maxSupply",
 				"outputs": [
 					{
@@ -324,19 +504,6 @@
 						"internalType": "string",
 						"name": "",
 						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "nftPerAddressLimit",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -518,12 +685,38 @@
 			{
 				"inputs": [
 					{
+						"internalType": "string",
+						"name": "_newContractURI",
+						"type": "string"
+					}
+				],
+				"name": "setContractURI",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "_limit",
 						"type": "uint256"
 					}
 				],
-				"name": "setNftPerAddressLimit",
+				"name": "setMaxMintAmount",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_limit",
+						"type": "uint256"
+					}
+				],
+				"name": "setMaxNFTPerAddress",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -752,6 +945,9 @@
 				"balanceOf(address)": {
 					"details": "See {IERC721-balanceOf}."
 				},
+				"burn(uint256)": {
+					"details": "Burns `tokenId`. See {ERC721-_burn}. Requirements: - The caller must own `tokenId` or be an approved operator."
+				},
 				"getApproved(uint256)": {
 					"details": "See {IERC721-getApproved}."
 				},
@@ -778,9 +974,6 @@
 				},
 				"setApprovalForAll(address,bool)": {
 					"details": "See {IERC721-setApprovalForAll}."
-				},
-				"supportsInterface(bytes4)": {
-					"details": "See {IERC165-supportsInterface}."
 				},
 				"symbol()": {
 					"details": "See {IERC721Metadata-symbol}."
@@ -814,7 +1007,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/WOM_Last.sol": "WOM"
+			"contracts/WOM_MINT.sol": "WOM"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -860,6 +1053,14 @@
 				"dweb:/ipfs/QmYvPafLfoquiDMEj7CKHtvbgHu7TJNPSVPSCjrtjV8HjV"
 			]
 		},
+		"@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol": {
+			"keccak256": "0xfa6873a010382f62e9ffe4592b305ef6e60f55502c95ed0ffa51eb10b5200d45",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f86000c6885fb5a0a8bd5cd2595d302f0b4038411d66b85b07fa10590f844c2e",
+				"dweb:/ipfs/QmeZuXaxdr7NH2wUAprx3BcLTke9RtcptAZgRKfQVHops5"
+			]
+		},
 		"@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol": {
 			"keccak256": "0x0a79511df8151b10b0a0004d6a76ad956582d32824af4c0f4886bdbdfe5746e5",
 			"license": "MIT",
@@ -900,6 +1101,14 @@
 				"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
 			]
 		},
+		"@openzeppelin/contracts/utils/Counters.sol": {
+			"keccak256": "0xf0018c2440fbe238dd3a8732fa8e17a0f9dce84d31451dc8a32f6d62b349c9f1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://59e1c62884d55b70f3ae5432b44bb3166ad71ae3acd19c57ab6ddc3c87c325ee",
+				"dweb:/ipfs/QmezuXg5GK5oeA4F91EZhozBFekhq5TD966bHPH18cCqhu"
+			]
+		},
 		"@openzeppelin/contracts/utils/Strings.sol": {
 			"keccak256": "0xaf159a8b1923ad2a26d516089bceca9bdeaeacd04be50983ea00ba63070f08a3",
 			"license": "MIT",
@@ -924,12 +1133,12 @@
 				"dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy"
 			]
 		},
-		"contracts/WOM_Last.sol": {
-			"keccak256": "0xc0cf7fbb689b5297c5cae12ff0a6f2622b51f62b0f5464d0088a90ea3e0b9118",
+		"contracts/WOM_MINT.sol": {
+			"keccak256": "0x4f4b50b4d1c6696cbfdf3be5e82b2db2992ebdbf404dd9c851f74ed661f8753b",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://e673b4a7fab5fe8b88cce95034b4f4852614dd513081d984efa41172fc50a5fc",
-				"dweb:/ipfs/QmTGKheLwb4KEos2ji2yLiJXsgxFUaByViWmsT98EBfAbd"
+				"bzz-raw://bcfa3370758aefd879da0059fd1585dd68fa88a5527c90235d63ab79665035e2",
+				"dweb:/ipfs/QmP8CACcnbfGG4jTnBojAJ2MpNozu6LreHFPzAp4ETPJoW"
 			]
 		}
 	},

@@ -1,23 +1,46 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract WOM is ERC721Enumerable, Ownable {
+contract WOM is ERC721Enumerable, Ownable, ERC721Burnable {
   using Strings for uint256;
+  using Counters for Counters.Counter;
+
+  Counters.Counter private _tokenIdCounter;
 
   string public baseURI = "";
   string public baseExtension = ".json";
   string public customContractURI = "";
-  uint256 public maxSupply = 13; // @TODO set to 1000
+  uint256 public maxSupply = 100; // @TODO set to 1000
   uint256 public maxMintAmount = 2;
   uint256 public maxNFTPerAddress = 2;
   bool public paused = false;
   bool public onlyWhitelisted = true;
   address[] public whitelistedAddresses;
   mapping(address => uint256) public addressMintedBalance;
+
+  event Sale(
+    uint256 id,
+    uint256 cost,
+    uint256 timestamp,
+    address indexed buyer,
+    string indexed tokenURI
+  );
+
+  struct SaleStruct {
+    uint256 id;
+    uint256 cost;
+    uint256 timestamp;
+    address buyer;
+    string metadataURL;
+  }
+
+  SaleStruct[] minted;
 
   constructor(
     string memory _name,
@@ -53,7 +76,21 @@ contract WOM is ERC721Enumerable, Ownable {
 
     for (uint256 i = 1; i <= _mintAmount; i++) {
       addressMintedBalance[msg.sender]++;
-      _safeMint(msg.sender, supply + i);
+      uint256 tokenId = _tokenIdCounter.current() + 1;
+      _tokenIdCounter.increment();
+      _safeMint(msg.sender, tokenId);
+
+      minted.push(
+        SaleStruct(
+          tokenId,
+          msg.value,
+          block.timestamp,
+          msg.sender,
+          tokenURI(tokenId)
+        )
+      );
+      
+      emit Sale(tokenId, msg.value, block.timestamp, msg.sender, tokenURI(tokenId));
     }
   }
   
@@ -100,7 +137,23 @@ contract WOM is ERC721Enumerable, Ownable {
       ? string(abi.encodePacked(currentBaseURI, tokenId.toString(), baseExtension))
       : "";
   }
+
+  // Getters
+
+  function getWhitelistedUsers() public view onlyOwner returns (address[] memory) {
+    return whitelistedAddresses;
+  }
+
+  function getAllNFTs() public view onlyOwner returns (SaleStruct[] memory) {
+    return minted;
+  }
   
+  function getAnNFTs(uint256 tokenId) public view onlyOwner returns (SaleStruct memory) {
+    return minted[tokenId - 1];
+  }
+  
+  // Setters
+
   function setMaxMintAmount(uint256 _limit) public onlyOwner {
     maxMintAmount = _limit;
   }
@@ -134,8 +187,22 @@ contract WOM is ERC721Enumerable, Ownable {
     whitelistedAddresses = _users;
   }
  
-  function _burn(uint256 tokenId) public{
-    burn(tokenId);
+  // The following functions are overrides required by Solidity.
+
+  function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+      internal
+      override(ERC721, ERC721Enumerable)
+  {
+      super._beforeTokenTransfer(from, to, tokenId);
+  }
+
+  function supportsInterface(bytes4 interfaceId)
+    public
+    view
+    override(ERC721, ERC721Enumerable)
+    returns (bool)
+  {
+      return super.supportsInterface(interfaceId);
   }
 
   function withdraw() public payable onlyOwner {
