@@ -148,7 +148,7 @@ contract WOM is ERC721Enumerable, Ownable, ERC721Burnable {
     return minted;
   }
   
-  function getAnNFTs(uint256 tokenId) public view onlyOwner returns (SaleStruct memory) {
+  function getAnNFT(uint256 tokenId) public view onlyOwner returns (SaleStruct memory) {
     return minted[tokenId - 1];
   }
   

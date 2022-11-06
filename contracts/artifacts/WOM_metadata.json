@@ -331,7 +331,7 @@
 						"type": "uint256"
 					}
 				],
-				"name": "getAnNFTs",
+				"name": "getAnNFT",
 				"outputs": [
 					{
 						"components": [
@@ -1134,11 +1134,11 @@
 			]
 		},
 		"contracts/WOM_MINT.sol": {
-			"keccak256": "0x4f4b50b4d1c6696cbfdf3be5e82b2db2992ebdbf404dd9c851f74ed661f8753b",
+			"keccak256": "0x110f166754baf23921f44c3204deb4f658b32f659831918722071098dbdc4ec4",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://bcfa3370758aefd879da0059fd1585dd68fa88a5527c90235d63ab79665035e2",
-				"dweb:/ipfs/QmP8CACcnbfGG4jTnBojAJ2MpNozu6LreHFPzAp4ETPJoW"
+				"bzz-raw://834654d789479a8add9fd069c973b3c196ac0757dc8758cd305cc998bdd3ae88",
+				"dweb:/ipfs/QmSw6PQivqruEGnGy1U2gzZusDFgMi5RLuxEeB4rZDeMbY"
 			]
 		}
 	},
