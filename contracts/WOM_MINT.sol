@@ -21,7 +21,7 @@ contract WOM is ERC721Enumerable, Ownable, ERC721Burnable {
   uint256 public maxNFTPerAddress = 2;
   bool public paused = false;
   bool public onlyWhitelisted = true;
-  address[] public whitelistedAddresses;
+  address[]  whitelistedAddresses;
   mapping(address => uint256) public addressMintedBalance;
 
   event Sale(

@@ -389,19 +389,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "getWhitelistedUsers",
-				"outputs": [
-					{
-						"internalType": "address[]",
-						"name": "",
-						"type": "address[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -431,6 +418,11 @@
 						"internalType": "address",
 						"name": "_user",
 						"type": "address"
+					},
+					{
+						"internalType": "bytes32[]",
+						"name": "_merkleProof",
+						"type": "bytes32[]"
 					}
 				],
 				"name": "isWhitelisted",
@@ -484,11 +476,29 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "merkleRoot",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
 						"name": "_mintAmount",
 						"type": "uint256"
+					},
+					{
+						"internalType": "bytes32[]",
+						"name": "_merkleProof",
+						"type": "bytes32[]"
 					}
 				],
 				"name": "mint",
@@ -724,6 +734,19 @@
 			{
 				"inputs": [
 					{
+						"internalType": "bytes32",
+						"name": "_merkleRoot",
+						"type": "bytes32"
+					}
+				],
+				"name": "setMerkleRoot",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "bool",
 						"name": "_state",
 						"type": "bool"
@@ -897,38 +920,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address[]",
-						"name": "_users",
-						"type": "address[]"
-					}
-				],
-				"name": "whitelistUsers",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "whitelistedAddresses",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [],
 				"name": "withdraw",
 				"outputs": [],
@@ -1007,7 +998,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/WOM_MINT.sol": "WOM"
+			"contracts/WOM_MERKLE.sol": "WOM"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -1117,6 +1108,14 @@
 				"dweb:/ipfs/QmPBdJmBBABMDCfyDjCbdxgiqRavgiSL88SYPGibgbPas9"
 			]
 		},
+		"@openzeppelin/contracts/utils/cryptography/MerkleProof.sol": {
+			"keccak256": "0xd466e8b07f4c6220eac16da5127f3ff142e65f0c15c03c7d38f257b02c8585e1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e6b3cab69f655e40117bbdd8e68d7423f26d1b24248fb189c295f08de8940616",
+				"dweb:/ipfs/QmWoyRthsBDMa7gJpH5UCjpa8uNUQfyaGbSgY3uvhBH9F3"
+			]
+		},
 		"@openzeppelin/contracts/utils/introspection/ERC165.sol": {
 			"keccak256": "0xd10975de010d89fd1c78dc5e8a9a7e7f496198085c151648f20cba166b32582b",
 			"license": "MIT",
@@ -1133,12 +1132,12 @@
 				"dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy"
 			]
 		},
-		"contracts/WOM_MINT.sol": {
-			"keccak256": "0x110f166754baf23921f44c3204deb4f658b32f659831918722071098dbdc4ec4",
+		"contracts/WOM_MERKLE.sol": {
+			"keccak256": "0xd72e6bf551918d476d5349bfc9adfaffbbfde1415aef32b0f0136341e9ff27b9",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://834654d789479a8add9fd069c973b3c196ac0757dc8758cd305cc998bdd3ae88",
-				"dweb:/ipfs/QmSw6PQivqruEGnGy1U2gzZusDFgMi5RLuxEeB4rZDeMbY"
+				"bzz-raw://9b7660d22069414c0deb2bd0dafd14fc0520b6f21f81805d7d4382bb825ea5a8",
+				"dweb:/ipfs/QmQafcPTBomKL2BHHEb6RaQPtRnoLCaAFNSckS5S4E3ENM"
 			]
 		}
 	},
