@@ -1006,7 +1006,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -1133,11 +1133,11 @@
 			]
 		},
 		"contracts/WOM_MERKLE.sol": {
-			"keccak256": "0xd72e6bf551918d476d5349bfc9adfaffbbfde1415aef32b0f0136341e9ff27b9",
+			"keccak256": "0x811350f50537776ac7b7fa40c50ffb0294fdc0daabc475732c9e495e707dd844",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://9b7660d22069414c0deb2bd0dafd14fc0520b6f21f81805d7d4382bb825ea5a8",
-				"dweb:/ipfs/QmQafcPTBomKL2BHHEb6RaQPtRnoLCaAFNSckS5S4E3ENM"
+				"bzz-raw://514643f46e5da7f20fbd19d291577482dda18a701f000c5dfd63d21bf36a678f",
+				"dweb:/ipfs/Qmd5zMX2HCajFc7i6dUwVNWzr6geMPZ4mVaiL1DDQJgi7C"
 			]
 		}
 	},

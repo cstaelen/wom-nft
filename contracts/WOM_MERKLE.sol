@@ -17,7 +17,7 @@ contract WOM is ERC721Enumerable, Ownable, ERC721Burnable {
   string public baseURI = "";
   string public baseExtension = ".json";
   string public customContractURI = "";
-  uint256 public maxSupply = 100; // @TODO set to 1000
+  uint256 public maxSupply = 1000; // @TODO set to 1000
   uint256 public maxMintAmount = 2;
   uint256 public maxNFTPerAddress = 2;
   bool public paused = false;
