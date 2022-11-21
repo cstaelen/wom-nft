@@ -72,6 +72,25 @@
 					{
 						"indexed": true,
 						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
 						"name": "from",
 						"type": "address"
 					},
@@ -198,6 +217,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -214,6 +246,13 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -414,6 +453,19 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -434,8 +486,14 @@
 				"name()": {
 					"details": "See {IERC721Metadata-name}."
 				},
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
 				"ownerOf(uint256)": {
 					"details": "See {IERC721-ownerOf}."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
 				},
 				"symbol()": {
 					"details": "See {IERC721Metadata-symbol}."
@@ -451,6 +509,9 @@
 				},
 				"totalSupply()": {
 					"details": "See {IERC721Enumerable-totalSupply}."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
 				}
 			},
 			"title": "ERC721OnChain",
@@ -480,11 +541,11 @@
 	},
 	"sources": {
 		"WOM_MERKLE_flat.sol": {
-			"keccak256": "0x02ff3da5fd21cda692c2b963bb84afe5a8c2af6c3b494b93f0a6020de6b68a2f",
-			"license": "MIT",
+			"keccak256": "0x6b6622553752577dd0b3c263b9801daacf7336692580d7b5b9619e01dac04ecf",
+			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://f30faa3140469fc1eaf87af7e5bdd92ae8886a8f60449f502c37722e47b075d6",
-				"dweb:/ipfs/QmVRW5xBwZHvAq4afhrLxzdpNFaFJ2Ejamx6BXUELdnvDG"
+				"bzz-raw://9b0094e6b9f6efb04f8fc48e438161ab45149af63d2e770a111c48b907a46e4c",
+				"dweb:/ipfs/Qmb1JjVb4PNP8x2DudfsxCDWv3wjrkXxuUegPRj1wmQDMF"
 			]
 		}
 	},
