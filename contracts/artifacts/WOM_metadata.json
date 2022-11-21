@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.7+commit.e28d00a7"
+		"version": "0.8.13+commit.abaa5c0e"
 	},
 	"language": "Solidity",
 	"output": {
@@ -30,6 +30,17 @@
 				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "operator",
+						"type": "address"
+					}
+				],
+				"name": "OperatorNotAllowed",
+				"type": "error"
 			},
 			{
 				"anonymous": false,
@@ -185,7 +196,7 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "to",
+						"name": "operator",
 						"type": "address"
 					},
 					{
@@ -930,9 +941,6 @@
 		"devdoc": {
 			"kind": "dev",
 			"methods": {
-				"approve(address,uint256)": {
-					"details": "See {IERC721-approve}."
-				},
 				"balanceOf(address)": {
 					"details": "See {IERC721-balanceOf}."
 				},
@@ -957,15 +965,6 @@
 				"renounceOwnership()": {
 					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
 				},
-				"safeTransferFrom(address,address,uint256)": {
-					"details": "See {IERC721-safeTransferFrom}."
-				},
-				"safeTransferFrom(address,address,uint256,bytes)": {
-					"details": "See {IERC721-safeTransferFrom}."
-				},
-				"setApprovalForAll(address,bool)": {
-					"details": "See {IERC721-setApprovalForAll}."
-				},
 				"symbol()": {
 					"details": "See {IERC721Metadata-symbol}."
 				},
@@ -980,9 +979,6 @@
 				},
 				"totalSupply()": {
 					"details": "See {IERC721Enumerable-totalSupply}."
-				},
-				"transferFrom(address,address,uint256)": {
-					"details": "See {IERC721-transferFrom}."
 				},
 				"transferOwnership(address)": {
 					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
@@ -1006,7 +1002,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -1133,11 +1129,43 @@
 			]
 		},
 		"contracts/WOM_MERKLE.sol": {
-			"keccak256": "0x811350f50537776ac7b7fa40c50ffb0294fdc0daabc475732c9e495e707dd844",
+			"keccak256": "0x2e82c07f7833cc486ec534093537259ec645e023f805b6847bea51616df0e266",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://514643f46e5da7f20fbd19d291577482dda18a701f000c5dfd63d21bf36a678f",
-				"dweb:/ipfs/Qmd5zMX2HCajFc7i6dUwVNWzr6geMPZ4mVaiL1DDQJgi7C"
+				"bzz-raw://89e897e819c3fe48cbbbf53ee4fdf5ecfea9c688b2177ef7f9018142adcbddb5",
+				"dweb:/ipfs/Qmdf9UkzEgXcpF3b3t1BAJCwKTdjCywxa7rqvjRstnghub"
+			]
+		},
+		"extensions/operator-filter/ContractAbstract.sol": {
+			"keccak256": "0x1ed09016a53e4df505641cb0b4fe6acd8fa9f0edc30f0e0b7d42465ef4f96ffa",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://58d2a958c0fa73cbfdbf19c4ca7cbfa7ad24e088e427760b3a1bddfca53a01dc",
+				"dweb:/ipfs/Qmf5TeJQVTRkJymfoqQAXaYQtMQh9Luh7C2RLHsSxFqUM1"
+			]
+		},
+		"extensions/operator-filter/DefaultOperatorFilterer.sol": {
+			"keccak256": "0x1d6616260cb0fa3a3c56c9db3c29b1db6037d0f30049dca5e94b4896999df991",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://dd672610b2df718151182ded4dac2c22be41ca2c3e981c2b2449c11bebcde1c6",
+				"dweb:/ipfs/QmNN4v58xrk1UtLbM5QHHNHaXShBv5fGXy7U2EhWWDXjj8"
+			]
+		},
+		"extensions/operator-filter/IOperatorFilterRegistry.sol": {
+			"keccak256": "0x0e6751a391939afcda79fde27c10b2b27c21041b5b9c81db28233fcdc1a2f9ba",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://eced709a040d7a4508174e96baa5cb8e9c323b10708be26ba1860945fe5aaac2",
+				"dweb:/ipfs/QmPd5q5JioYG4JeYYoRyQYSjHEwddfjXyxtgDKpeNyefYU"
+			]
+		},
+		"extensions/operator-filter/OperatorFilterer.sol": {
+			"keccak256": "0x2db030f6c40669534641dbd8f61ec32b8d4f470eaa9ff94e460e7fb08882c6e2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b861cd47aa33b91214bec9551ca227d7234aa2a0d458ba87ccf75c026fa324aa",
+				"dweb:/ipfs/Qmdea3QNEtBXG5KMwHyMysGETgRhn27vQx4Xk3rJCRyuo5"
 			]
 		}
 	},
