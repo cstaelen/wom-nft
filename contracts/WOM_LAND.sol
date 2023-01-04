@@ -45,6 +45,7 @@ contract WOM_LAND is ERC721A, Ownable {
       }
     }
 
+    addressMintedBalance[msg.sender] = addressMintedBalance[msg.sender] + _mintAmount;
     _mint(msg.sender, _mintAmount);
   }
   
