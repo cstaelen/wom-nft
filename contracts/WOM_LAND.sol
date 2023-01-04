@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract WOM is ERC721A, Ownable {
+contract WOM_LAND is ERC721A, Ownable {
   using Strings for uint256;
 
   string public baseURI = "";
