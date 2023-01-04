@@ -21,10 +21,7 @@ contract WOM is ERC721A, Ownable {
   mapping(address => uint256) public addressMintedBalance;
   bytes32 public merkleRoot = 0x48b73e1b279cf47e870b8ed17a1257ddecd7beb6492cccf15c13f0a7fbea91a8;
 
-  constructor(
-    string memory _name,
-    string memory _symbol
-  ) ERC721A(_name, _symbol) {}
+  constructor() ERC721A('Lands of Mythesda', 'LOM') {}
 
   // internal
   function _baseURI() internal view virtual override returns (string memory) {
