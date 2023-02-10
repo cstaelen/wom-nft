@@ -2,120 +2,145 @@
 
 pragma solidity >=0.8.0 <0.9.0;
 
+import {DefaultOperatorFilterer} from "../extensions/operator-filter/DefaultOperatorFilterer.sol";
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract WOM_LAND is ERC721A, Ownable {
-  using Strings for uint256;
+contract WomLand is ERC721A, DefaultOperatorFilterer, Ownable {
+    string public baseURI;
+    uint256 public maxSupply = 1000;
+    uint256 public publicMaxNFTPerAddress = 1;
+    uint256 public publicPriceMint = 0.04 ether;
+    bool public paused = false;
+    bool public publicMint = false;
+    address public signerAddress = 0x4E99031f4C39cd1AE173Bc32e397dE77ac6D6395;
+    mapping(address => uint256) public alreadyMinted;
 
-  string public baseURI = "";
-  string public baseExtension = ".json";
-  string public customContractURI = "";
-  uint256 public maxSupply = 1000;
-  uint256 public maxMintAmount = 2;
-  uint256 public maxNFTPerAddress = 2;
-  bool public paused = false;
-  bool public onlyWhitelisted = true;
-  mapping(address => uint256) public addressMintedBalance;
-  bytes32 public merkleRoot = 0x48b73e1b279cf47e870b8ed17a1257ddecd7beb6492cccf15c13f0a7fbea91a8;
+    using ECDSA for bytes32;
 
-  constructor() ERC721A('Lands of Mythesda', 'LOM') {}
+    constructor() ERC721A("Lands of Mythesda", "LOM") {}
 
-  // internal
-  function _baseURI() internal view virtual override returns (string memory) {
-    return baseURI;
-  }
+    function mint(
+        uint256 quantity,
+        uint256 maxMint,
+        uint256 unitPrice,
+        bytes memory signature
+    ) public payable {
+        require(!paused, "The contract is paused");
+        uint256 supply = totalSupply();
+        require(quantity > 0, "Need to mint at least 1 NFT");
+        require(supply + quantity <= maxSupply, "Max NFT limit exceeded");
 
-  // public
-  function mint(uint256 _mintAmount, bytes32[] calldata _merkleProof) public payable {
-    require(!paused, "the contract is paused");
-    uint256 supply = totalSupply();
-    require(_mintAmount > 0, "need to mint at least 1 NFT");
-    require(supply + _mintAmount <= maxSupply, "max NFT limit exceeded");
+        uint256 ownerMintedCount = alreadyMinted[msg.sender];
 
-    if (msg.sender != owner()) {
-      uint256 ownerMintedCount = addressMintedBalance[msg.sender];
-      require(ownerMintedCount + _mintAmount <= maxNFTPerAddress, "max NFT per address exceeded");
-      require(_mintAmount <= maxMintAmount, "max mint amount per session exceeded");
+        if (!publicMint) {
+            verifyCoupon(maxMint, unitPrice, msg.sender, signature);
+            require(
+                ownerMintedCount + quantity <= maxMint,
+                "Max NFT for address exceeded"
+            );
+            require(msg.value >= unitPrice * quantity, "Insufficient founds");
+        } else {
+            require(
+                ownerMintedCount + quantity <= publicMaxNFTPerAddress,
+                "Max NFT for address exceeded"
+            );
+            require(
+                msg.value >= publicPriceMint * quantity,
+                "Insufficient founds"
+            );
+        }
 
-      if(onlyWhitelisted == true) {
-          require(isWhitelisted(msg.sender, _merkleProof), "user is not whitelisted");
-      }
+        alreadyMinted[msg.sender] = alreadyMinted[msg.sender] + quantity;
+
+        _mint(msg.sender, quantity);
     }
 
-    addressMintedBalance[msg.sender] = addressMintedBalance[msg.sender] + _mintAmount;
-    _mint(msg.sender, _mintAmount);
-  }
-  
-  function contractURI() public view returns (string memory) {
-    return customContractURI;
-  }
+    function _baseURI() internal view virtual override returns (string memory) {
+        return baseURI;
+    }
 
-  function isWhitelisted(address _user, bytes32[] calldata _merkleProof) public view returns (bool) {
-    bytes32 leaf = keccak256(abi.encodePacked(_user));
-    return MerkleProof.verify(_merkleProof, merkleRoot, leaf);
-  }
+    function burn(uint256 tokenId) public onlyOwner {
+        super._burn(tokenId);
+    }
 
-  function tokenURI(uint256 tokenId)
-    public
-    view
-    virtual
-    override
-    returns (string memory)
-  {
-    require(
-      _exists(tokenId),
-      "ERC721Metadata: URI query for nonexistent token"
-    );
+    function setBaseUri(string memory baseuri_) public onlyOwner {
+        baseURI = baseuri_;
+    }
 
-    string memory currentBaseURI = _baseURI();
-    return bytes(currentBaseURI).length > 0
-      ? string(abi.encodePacked(currentBaseURI, tokenId.toString(), baseExtension))
-      : "";
-  }
-  
-  // Setters
+    function ownerMint(address to, uint256 quantity) public onlyOwner {
+        _mint(to, quantity);
+    }
 
-  function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {
-    merkleRoot = _merkleRoot;
-  }
-  
-  function setMaxNFTPerAddress(uint256 _limit) public onlyOwner {
-    maxNFTPerAddress = _limit;
-  }
+    function setSignerAddress(address signerAddress_) public onlyOwner {
+        signerAddress = signerAddress_;
+    }
 
-  function setBaseURI(string memory _newBaseURI) public onlyOwner {
-    baseURI = _newBaseURI;
-  }
+    function pause(bool _state) public onlyOwner {
+        paused = _state;
+    }
 
-  function setContractURI(string memory _newContractURI) public onlyOwner {
-    customContractURI = _newContractURI;
-  }
+    function setPublicMint(bool _state) public onlyOwner {
+        publicMint = _state;
+    }
 
-  function setBaseExtension(string memory _newBaseExtension) public onlyOwner {
-    baseExtension = _newBaseExtension;
-  }
+    function setPublicMaxNFTPerAddress(uint256 _state) public onlyOwner {
+        publicMaxNFTPerAddress = _state;
+    }
 
-  function pause(bool _state) public onlyOwner {
-    paused = _state;
-  }
-  
-  function setOnlyWhitelisted(bool _state) public onlyOwner {
-    onlyWhitelisted = _state;
-  }
+    function setPublicPrice(uint256 _state) public onlyOwner {
+        publicPriceMint = _state;
+    }
 
-  function ownerMint(address to, uint256 quantity) public onlyOwner {
-    _mint(to, quantity);
-  }
+    function verifyCoupon(
+        uint256 maxMint,
+        uint256 unitPrice,
+        address minterAddress,
+        bytes memory signature
+    ) public view virtual {
+        bytes32 inputHash = keccak256(
+            abi.encodePacked(maxMint, unitPrice, minterAddress)
+        );
 
-  function withdraw() public payable onlyOwner {
-    // This will payout the contract balance to the owner.
-    // Do not remove this otherwise you will not be able to withdraw the funds.
-    // =============================================================================
-    (bool os, ) = payable(owner()).call{value: address(this).balance}("");
-    assert(os);
-    // =============================================================================
-  }
+        bytes32 ethSignedMessageHash = inputHash.toEthSignedMessageHash();
+        address recoveredAddress = ethSignedMessageHash.recover(signature);
+        require(recoveredAddress == signerAddress, "Bad signature");
+    }
+
+    function withdraw() public payable onlyOwner {
+        // This will payout the contract balance to the owner.
+        // Do not remove this otherwise you will not be able to withdraw the funds.
+        // =============================================================================
+        (bool os, ) = payable(owner()).call{value: address(this).balance}("");
+        assert(os);
+        // =============================================================================
+    }
+
+    // OPERATOR FILTER OVERRIDES
+
+    function setApprovalForAll(address operator, bool approved) public override onlyAllowedOperatorApproval(operator) {
+    super.setApprovalForAll(operator, approved);
+    }
+
+    function approve(address operator, uint256 tokenId) public payable override onlyAllowedOperatorApproval(operator) {
+        super.approve(operator, tokenId);
+    }
+
+    function transferFrom(address from, address to, uint256 tokenId) public payable override onlyAllowedOperator(from) {
+        super.transferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId) public payable override onlyAllowedOperator(from) {
+        super.safeTransferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data)
+        public
+        payable
+        override
+        onlyAllowedOperator(from)
+    {
+        super.safeTransferFrom(from, to, tokenId, data);
+    }
 }

@@ -26,7 +26,7 @@ contract WOM is ERC721OnChain {
   event Sale(
     uint256 id,
     uint256 cost,
-    uint256 timestamp,
+    uint256 timestamp,  
     address indexed buyer,
     string indexed tokenURI
   );

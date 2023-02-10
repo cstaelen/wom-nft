@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.14+commit.80d49f37"
+		"version": "0.8.17+commit.8df45f5f"
 	},
 	"language": "Solidity",
 	"output": {
@@ -1129,11 +1129,11 @@
 			]
 		},
 		"contracts/WOM_MERKLE.sol": {
-			"keccak256": "0x2e82c07f7833cc486ec534093537259ec645e023f805b6847bea51616df0e266",
+			"keccak256": "0xfc6582240f8f6ab5a97b4032d4ac2e1e72d69087ac5123e50cd57a1ef6173a81",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://89e897e819c3fe48cbbbf53ee4fdf5ecfea9c688b2177ef7f9018142adcbddb5",
-				"dweb:/ipfs/Qmdf9UkzEgXcpF3b3t1BAJCwKTdjCywxa7rqvjRstnghub"
+				"bzz-raw://68f428b731c7c4f4a0661a92d47f5253add61ab286747b1890530d9710fe1d4c",
+				"dweb:/ipfs/QmUdrXNHaq16eLyNyHX6E8vybGBniAbVHMUcDHEZEPgAkj"
 			]
 		},
 		"extensions/operator-filter/ContractAbstract.sol": {
