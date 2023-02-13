@@ -601,11 +601,11 @@
 	},
 	"sources": {
 		"contracts/WOM_LAND.sol_flattened.sol": {
-			"keccak256": "0xe665cd5f5b8833bf95dba23202aa7e6a0c614d120d7b535126fb6c4259c7defb",
+			"keccak256": "0xff7246fc74a20e254e96865c9ff0df1925e60b12d856956200b403b98f109bcb",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://5391e0196fd811e1a20e15e1fe0c8cc664e47667380bd27a7e36d4aea987da7d",
-				"dweb:/ipfs/QmVySHaLQmWh6ThELmcDuzR9aX9DpFijZSc8VjdVR7PW5U"
+				"bzz-raw://41627ed88addb001e2016f85cacb61ca287c0c6ad5b32d8efb23e55258a8205d",
+				"dweb:/ipfs/QmYxA1JUV93HZfPtE348NroXGnRhrRFfjvhpfNKw6gMRYA"
 			]
 		}
 	},
