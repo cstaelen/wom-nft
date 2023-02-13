@@ -2039,7 +2039,6 @@ pragma solidity >=0.8.0 <0.9.0;
 
 
 
-
 contract WomLand is ERC721A, DefaultOperatorFilterer, Ownable {
     string public baseURI;
     uint256 public maxSupply = 1000;
@@ -2048,7 +2047,8 @@ contract WomLand is ERC721A, DefaultOperatorFilterer, Ownable {
     bool public paused = false;
     bool public publicMint = false;
     address public signerAddress = 0x4E99031f4C39cd1AE173Bc32e397dE77ac6D6395;
-    mapping(address => uint256) public alreadyMinted;
+    mapping(address => uint256) public alreadyMintedPresale;
+    mapping(address => uint256) public alreadyMintedPublic;
 
     using ECDSA for bytes32;
 
@@ -2065,27 +2065,30 @@ contract WomLand is ERC721A, DefaultOperatorFilterer, Ownable {
         require(quantity > 0, "Need to mint at least 1 NFT");
         require(supply + quantity <= maxSupply, "Max NFT limit exceeded");
 
-        uint256 ownerMintedCount = alreadyMinted[msg.sender];
-
         if (!publicMint) {
+            uint256 ownerMintedPresaleCount = alreadyMintedPresale[msg.sender];
+
             verifyCoupon(maxMint, unitPrice, msg.sender, signature);
             require(
-                ownerMintedCount + quantity <= maxMint,
+                ownerMintedPresaleCount + quantity <= maxMint,
                 "Max NFT for address exceeded"
             );
             require(msg.value >= unitPrice * quantity, "Insufficient founds");
+
+            alreadyMintedPresale[msg.sender] = ownerMintedPresaleCount + quantity;
         } else {
+            uint256 ownerMintedPublicCount = alreadyMintedPublic[msg.sender];
             require(
-                ownerMintedCount + quantity <= publicMaxNFTPerAddress,
+                ownerMintedPublicCount + quantity <= publicMaxNFTPerAddress,
                 "Max NFT for address exceeded"
             );
             require(
                 msg.value >= publicPriceMint * quantity,
                 "Insufficient founds"
             );
-        }
 
-        alreadyMinted[msg.sender] = alreadyMinted[msg.sender] + quantity;
+            alreadyMintedPublic[msg.sender] = ownerMintedPublicCount + quantity;
+        }
 
         _mint(msg.sender, quantity);
     }

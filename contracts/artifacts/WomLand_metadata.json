@@ -232,7 +232,26 @@
 						"type": "address"
 					}
 				],
-				"name": "alreadyMinted",
+				"name": "alreadyMintedPresale",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "alreadyMintedPublic",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -988,11 +1007,11 @@
 			]
 		},
 		"contracts/WOM_LAND.sol": {
-			"keccak256": "0x42249fd90692afe5c470e1f58e896fc28f02239cc4a2e4f97bd7533a49b0f6bb",
+			"keccak256": "0x70501242ac8f945ef2fb624e96ee39bde632d3c70771096b069bcdff1aeaf49c",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://7f23c0260b14b8d909fe7595bec72b3a8e9d7296a4b697d529b7ab7ca44c7e9a",
-				"dweb:/ipfs/QmYzoQhSAz7iNe1yQ3Bru5SG4RojwuDsH9WT8NDVnkoN6a"
+				"bzz-raw://fe0203595d651c931082a9c33b2c791ae887c414c4c94c662181f76c10feb847",
+				"dweb:/ipfs/Qmd2kqcbsxK6Ut3bNYmWzc7Erj2BEkWb92fSG8KVcSqFk7"
 			]
 		},
 		"erc721a/contracts/ERC721A.sol": {
