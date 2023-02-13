@@ -48,7 +48,9 @@
 			"sourceMap": ""
 		},
 		"gasEstimates": null,
-		"methodIdentifiers": {}
+		"methodIdentifiers": {
+			"OPERATOR_FILTER_REGISTRY()": "41f43434"
+		}
 	},
 	"abi": [
 		{
@@ -61,6 +63,19 @@
 			],
 			"name": "OperatorNotAllowed",
 			"type": "error"
+		},
+		{
+			"inputs": [],
+			"name": "OPERATOR_FILTER_REGISTRY",
+			"outputs": [
+				{
+					"internalType": "contract IOperatorFilterRegistry",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
 		}
 	]
 }

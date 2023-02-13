@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
+
 // File: @openzeppelin/contracts/utils/Strings.sol
 
 
@@ -1782,39 +1782,157 @@ contract ERC721A is IERC721A {
     }
 }
 
-// File: extensions/operator-filter/IOperatorFilterRegistry.sol
+// File: operator-filter-registry/src/lib/Constants.sol
+
+
+pragma solidity ^0.8.17;
+
+address constant CANONICAL_OPERATOR_FILTER_REGISTRY_ADDRESS = 0x000000000000AAeB6D7670E522A718067333cd4E;
+address constant CANONICAL_CORI_SUBSCRIPTION = 0x3cc6CddA760b79bAfa08dF41ECFA224f810dCeB6;
+
+// File: operator-filter-registry/src/IOperatorFilterRegistry.sol
 
 
 pragma solidity ^0.8.13;
 
 interface IOperatorFilterRegistry {
+    /**
+     * @notice Returns true if operator is not filtered for a given token, either by address or codeHash. Also returns
+     *         true if supplied registrant address is not registered.
+     */
     function isOperatorAllowed(address registrant, address operator) external view returns (bool);
+
+    /**
+     * @notice Registers an address with the registry. May be called by address itself or by EIP-173 owner.
+     */
     function register(address registrant) external;
+
+    /**
+     * @notice Registers an address with the registry and "subscribes" to another address's filtered operators and codeHashes.
+     */
     function registerAndSubscribe(address registrant, address subscription) external;
+
+    /**
+     * @notice Registers an address with the registry and copies the filtered operators and codeHashes from another
+     *         address without subscribing.
+     */
     function registerAndCopyEntries(address registrant, address registrantToCopy) external;
+
+    /**
+     * @notice Unregisters an address with the registry and removes its subscription. May be called by address itself or by EIP-173 owner.
+     *         Note that this does not remove any filtered addresses or codeHashes.
+     *         Also note that any subscriptions to this registrant will still be active and follow the existing filtered addresses and codehashes.
+     */
     function unregister(address addr) external;
+
+    /**
+     * @notice Update an operator address for a registered address - when filtered is true, the operator is filtered.
+     */
     function updateOperator(address registrant, address operator, bool filtered) external;
+
+    /**
+     * @notice Update multiple operators for a registered address - when filtered is true, the operators will be filtered. Reverts on duplicates.
+     */
     function updateOperators(address registrant, address[] calldata operators, bool filtered) external;
+
+    /**
+     * @notice Update a codeHash for a registered address - when filtered is true, the codeHash is filtered.
+     */
     function updateCodeHash(address registrant, bytes32 codehash, bool filtered) external;
+
+    /**
+     * @notice Update multiple codeHashes for a registered address - when filtered is true, the codeHashes will be filtered. Reverts on duplicates.
+     */
     function updateCodeHashes(address registrant, bytes32[] calldata codeHashes, bool filtered) external;
+
+    /**
+     * @notice Subscribe an address to another registrant's filtered operators and codeHashes. Will remove previous
+     *         subscription if present.
+     *         Note that accounts with subscriptions may go on to subscribe to other accounts - in this case,
+     *         subscriptions will not be forwarded. Instead the former subscription's existing entries will still be
+     *         used.
+     */
     function subscribe(address registrant, address registrantToSubscribe) external;
+
+    /**
+     * @notice Unsubscribe an address from its current subscribed registrant, and optionally copy its filtered operators and codeHashes.
+     */
     function unsubscribe(address registrant, bool copyExistingEntries) external;
+
+    /**
+     * @notice Get the subscription address of a given registrant, if any.
+     */
     function subscriptionOf(address addr) external returns (address registrant);
+
+    /**
+     * @notice Get the set of addresses subscribed to a given registrant.
+     *         Note that order is not guaranteed as updates are made.
+     */
     function subscribers(address registrant) external returns (address[] memory);
+
+    /**
+     * @notice Get the subscriber at a given index in the set of addresses subscribed to a given registrant.
+     *         Note that order is not guaranteed as updates are made.
+     */
     function subscriberAt(address registrant, uint256 index) external returns (address);
+
+    /**
+     * @notice Copy filtered operators and codeHashes from a different registrantToCopy to addr.
+     */
     function copyEntriesOf(address registrant, address registrantToCopy) external;
+
+    /**
+     * @notice Returns true if operator is filtered by a given address or its subscription.
+     */
     function isOperatorFiltered(address registrant, address operator) external returns (bool);
+
+    /**
+     * @notice Returns true if the hash of an address's code is filtered by a given address or its subscription.
+     */
     function isCodeHashOfFiltered(address registrant, address operatorWithCode) external returns (bool);
+
+    /**
+     * @notice Returns true if a codeHash is filtered by a given address or its subscription.
+     */
     function isCodeHashFiltered(address registrant, bytes32 codeHash) external returns (bool);
+
+    /**
+     * @notice Returns a list of filtered operators for a given address or its subscription.
+     */
     function filteredOperators(address addr) external returns (address[] memory);
+
+    /**
+     * @notice Returns the set of filtered codeHashes for a given address or its subscription.
+     *         Note that order is not guaranteed as updates are made.
+     */
     function filteredCodeHashes(address addr) external returns (bytes32[] memory);
+
+    /**
+     * @notice Returns the filtered operator at the given index of the set of filtered operators for a given address or
+     *         its subscription.
+     *         Note that order is not guaranteed as updates are made.
+     */
     function filteredOperatorAt(address registrant, uint256 index) external returns (address);
+
+    /**
+     * @notice Returns the filtered codeHash at the given index of the list of filtered codeHashes for a given address or
+     *         its subscription.
+     *         Note that order is not guaranteed as updates are made.
+     */
     function filteredCodeHashAt(address registrant, uint256 index) external returns (bytes32);
+
+    /**
+     * @notice Returns true if an address has registered
+     */
     function isRegistered(address addr) external returns (bool);
+
+    /**
+     * @dev Convenience method to compute the code hash of an arbitrary contract
+     */
     function codeHashOf(address addr) external returns (bytes32);
 }
 
-// File: extensions/operator-filter/OperatorFilterer.sol
+// File: operator-filter-registry/src/OperatorFilterer.sol
 
 
 pragma solidity ^0.8.13;
@@ -1824,13 +1942,22 @@ pragma solidity ^0.8.13;
  * @title  OperatorFilterer
  * @notice Abstract contract whose constructor automatically registers and optionally subscribes to or copies another
  *         registrant's entries in the OperatorFilterRegistry.
+ * @dev    This smart contract is meant to be inherited by token contracts so they can use the following:
+ *         - `onlyAllowedOperator` modifier for `transferFrom` and `safeTransferFrom` methods.
+ *         - `onlyAllowedOperatorApproval` modifier for `approve` and `setApprovalForAll` methods.
+ *         Please note that if your token contract does not provide an owner with EIP-173, it must provide
+ *         administration methods on the contract itself to interact with the registry otherwise the subscription
+ *         will be locked to the options set during construction.
  */
+
 abstract contract OperatorFilterer {
+    /// @dev Emitted when an operator is not allowed.
     error OperatorNotAllowed(address operator);
 
-    IOperatorFilterRegistry constant OPERATOR_FILTER_REGISTRY =
-        IOperatorFilterRegistry(0x000000000000AAeB6D7670E522A718067333cd4E);
+    IOperatorFilterRegistry public constant OPERATOR_FILTER_REGISTRY =
+        IOperatorFilterRegistry(CANONICAL_OPERATOR_FILTER_REGISTRY_ADDRESS);
 
+    /// @dev The constructor that is called when the contract is being deployed.
     constructor(address subscriptionOrRegistrantToCopy, bool subscribe) {
         // If an inheriting token contract is deployed to a network without the registry deployed, the modifier
         // will not revert, but the contract will need to be registered with the registry once it is deployed in
@@ -1848,35 +1975,43 @@ abstract contract OperatorFilterer {
         }
     }
 
+    /**
+     * @dev A helper function to check if an operator is allowed.
+     */
     modifier onlyAllowedOperator(address from) virtual {
-        // Check registry code length to facilitate testing in environments without a deployed registry.
-        if (address(OPERATOR_FILTER_REGISTRY).code.length > 0) {
-            // Allow spending tokens from addresses with balance
-            // Note that this still allows listings and marketplaces with escrow to transfer tokens if transferred
-            // from an EOA.
-            if (from == msg.sender) {
-                _;
-                return;
-            }
-            if (!OPERATOR_FILTER_REGISTRY.isOperatorAllowed(address(this), msg.sender)) {
-                revert OperatorNotAllowed(msg.sender);
-            }
+        // Allow spending tokens from addresses with balance
+        // Note that this still allows listings and marketplaces with escrow to transfer tokens if transferred
+        // from an EOA.
+        if (from != msg.sender) {
+            _checkFilterOperator(msg.sender);
         }
         _;
     }
 
+    /**
+     * @dev A helper function to check if an operator approval is allowed.
+     */
     modifier onlyAllowedOperatorApproval(address operator) virtual {
+        _checkFilterOperator(operator);
+        _;
+    }
+
+    /**
+     * @dev A helper function to check if an operator is allowed.
+     */
+    function _checkFilterOperator(address operator) internal view virtual {
         // Check registry code length to facilitate testing in environments without a deployed registry.
         if (address(OPERATOR_FILTER_REGISTRY).code.length > 0) {
+            // under normal circumstances, this function will revert rather than return false, but inheriting contracts
+            // may specify their own OperatorFilterRegistry implementations, which may behave differently
             if (!OPERATOR_FILTER_REGISTRY.isOperatorAllowed(address(this), operator)) {
                 revert OperatorNotAllowed(operator);
             }
         }
-        _;
     }
 }
 
-// File: extensions/operator-filter/DefaultOperatorFilterer.sol
+// File: operator-filter-registry/src/DefaultOperatorFilterer.sol
 
 
 pragma solidity ^0.8.13;
@@ -1885,11 +2020,14 @@ pragma solidity ^0.8.13;
 /**
  * @title  DefaultOperatorFilterer
  * @notice Inherits from OperatorFilterer and automatically subscribes to the default OpenSea subscription.
+ * @dev    Please note that if your token contract does not provide an owner with EIP-173, it must provide
+ *         administration methods on the contract itself to interact with the registry otherwise the subscription
+ *         will be locked to the options set during construction.
  */
-abstract contract DefaultOperatorFilterer is OperatorFilterer {
-    address constant DEFAULT_SUBSCRIPTION = address(0x3cc6CddA760b79bAfa08dF41ECFA224f810dCeB6);
 
-    constructor() OperatorFilterer(DEFAULT_SUBSCRIPTION, true) {}
+abstract contract DefaultOperatorFilterer is OperatorFilterer {
+    /// @dev The constructor that is called when the contract is being deployed.
+    constructor() OperatorFilterer(CANONICAL_CORI_SUBSCRIPTION, true) {}
 }
 
 // File: contracts/WOM_LAND.sol

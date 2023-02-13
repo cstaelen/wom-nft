@@ -498,12 +498,86 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"codeHashOf(address)": {
+					"details": "Convenience method to compute the code hash of an arbitrary contract"
+				}
+			},
 			"version": 1
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {},
+			"methods": {
+				"copyEntriesOf(address,address)": {
+					"notice": "Copy filtered operators and codeHashes from a different registrantToCopy to addr."
+				},
+				"filteredCodeHashAt(address,uint256)": {
+					"notice": "Returns the filtered codeHash at the given index of the list of filtered codeHashes for a given address or         its subscription.         Note that order is not guaranteed as updates are made."
+				},
+				"filteredCodeHashes(address)": {
+					"notice": "Returns the set of filtered codeHashes for a given address or its subscription.         Note that order is not guaranteed as updates are made."
+				},
+				"filteredOperatorAt(address,uint256)": {
+					"notice": "Returns the filtered operator at the given index of the set of filtered operators for a given address or         its subscription.         Note that order is not guaranteed as updates are made."
+				},
+				"filteredOperators(address)": {
+					"notice": "Returns a list of filtered operators for a given address or its subscription."
+				},
+				"isCodeHashFiltered(address,bytes32)": {
+					"notice": "Returns true if a codeHash is filtered by a given address or its subscription."
+				},
+				"isCodeHashOfFiltered(address,address)": {
+					"notice": "Returns true if the hash of an address's code is filtered by a given address or its subscription."
+				},
+				"isOperatorAllowed(address,address)": {
+					"notice": "Returns true if operator is not filtered for a given token, either by address or codeHash. Also returns         true if supplied registrant address is not registered."
+				},
+				"isOperatorFiltered(address,address)": {
+					"notice": "Returns true if operator is filtered by a given address or its subscription."
+				},
+				"isRegistered(address)": {
+					"notice": "Returns true if an address has registered"
+				},
+				"register(address)": {
+					"notice": "Registers an address with the registry. May be called by address itself or by EIP-173 owner."
+				},
+				"registerAndCopyEntries(address,address)": {
+					"notice": "Registers an address with the registry and copies the filtered operators and codeHashes from another         address without subscribing."
+				},
+				"registerAndSubscribe(address,address)": {
+					"notice": "Registers an address with the registry and \"subscribes\" to another address's filtered operators and codeHashes."
+				},
+				"subscribe(address,address)": {
+					"notice": "Subscribe an address to another registrant's filtered operators and codeHashes. Will remove previous         subscription if present.         Note that accounts with subscriptions may go on to subscribe to other accounts - in this case,         subscriptions will not be forwarded. Instead the former subscription's existing entries will still be         used."
+				},
+				"subscriberAt(address,uint256)": {
+					"notice": "Get the subscriber at a given index in the set of addresses subscribed to a given registrant.         Note that order is not guaranteed as updates are made."
+				},
+				"subscribers(address)": {
+					"notice": "Get the set of addresses subscribed to a given registrant.         Note that order is not guaranteed as updates are made."
+				},
+				"subscriptionOf(address)": {
+					"notice": "Get the subscription address of a given registrant, if any."
+				},
+				"unregister(address)": {
+					"notice": "Unregisters an address with the registry and removes its subscription. May be called by address itself or by EIP-173 owner.         Note that this does not remove any filtered addresses or codeHashes.         Also note that any subscriptions to this registrant will still be active and follow the existing filtered addresses and codehashes."
+				},
+				"unsubscribe(address,bool)": {
+					"notice": "Unsubscribe an address from its current subscribed registrant, and optionally copy its filtered operators and codeHashes."
+				},
+				"updateCodeHash(address,bytes32,bool)": {
+					"notice": "Update a codeHash for a registered address - when filtered is true, the codeHash is filtered."
+				},
+				"updateCodeHashes(address,bytes32[],bool)": {
+					"notice": "Update multiple codeHashes for a registered address - when filtered is true, the codeHashes will be filtered. Reverts on duplicates."
+				},
+				"updateOperator(address,address,bool)": {
+					"notice": "Update an operator address for a registered address - when filtered is true, the operator is filtered."
+				},
+				"updateOperators(address,address[],bool)": {
+					"notice": "Update multiple operators for a registered address - when filtered is true, the operators will be filtered. Reverts on duplicates."
+				}
+			},
 			"version": 1
 		}
 	},
@@ -517,18 +591,18 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
 		"contracts/WOM_LAND.sol_flattened.sol": {
-			"keccak256": "0x06ed1092044c08df5813e26a6381278538e31ac058c9464339c7eeb2515736b0",
+			"keccak256": "0xe665cd5f5b8833bf95dba23202aa7e6a0c614d120d7b535126fb6c4259c7defb",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://685401aa38cf435a67628be296b6eb56d9b67e2a9ce9d92b7b268bf0caaeaa8e",
-				"dweb:/ipfs/QmPGgWz8tiFDfSgFb516VjVJebXfFqUCAfeVqwgzccEQLn"
+				"bzz-raw://5391e0196fd811e1a20e15e1fe0c8cc664e47667380bd27a7e36d4aea987da7d",
+				"dweb:/ipfs/QmVySHaLQmWh6ThELmcDuzR9aX9DpFijZSc8VjdVR7PW5U"
 			]
 		}
 	},
